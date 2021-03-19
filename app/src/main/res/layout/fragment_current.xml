@@ -1,14 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".CurrentFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
 
-</FrameLayout>
+    <TextView
+        android:id="@+id/locationTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/cabin"
+        android:text="Durgapur"
+        android:textSize="25sp"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/timeTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="Wednesday Jul 29, 12:04 PM"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="@+id/locationTv"
+        app:layout_constraintStart_toStartOf="@+id/locationTv"
+        app:layout_constraintTop_toBottomOf="@+id/locationTv" />
+
+    <ImageView
+        android:id="@+id/weatherImageView"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="8dp"
+        app:tint = "@color/colorAccent"
+        android:src="@drawable/ic_wb_sunny_black_24dp"
+        app:layout_constraintEnd_toEndOf="@+id/timeTv"
+        app:layout_constraintStart_toStartOf="@+id/timeTv"
+        app:layout_constraintTop_toBottomOf="@+id/timeTv" />
+
+    <TextView
+        android:id="@+id/tempTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:text="TextView"
+        android:textSize="25sp"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="@+id/weatherImageView"
+        app:layout_constraintHorizontal_bias="0.476"
+        app:layout_constraintStart_toStartOf="@+id/weatherImageView"
+        app:layout_constraintTop_toBottomOf="@+id/weatherImageView" />
+
+    <TextView
+        android:id="@+id/descriptionTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Haze"
+        android:textSize="18sp"
+        android:layout_marginTop="25dp"
+        app:layout_constraintEnd_toEndOf="@+id/tempTv"
+        app:layout_constraintStart_toStartOf="@+id/tempTv"
+        app:layout_constraintTop_toBottomOf="@+id/tempTv" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

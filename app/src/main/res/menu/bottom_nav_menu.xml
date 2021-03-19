@@ -2,9 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/currentFragment"
         android:title="@string/current_weather"
-        android:icon="@drawable/ic_cloud"/>
+        android:icon="@drawable/ic_home"/>
     <item android:id="@+id/forecastFragment"
         android:title="@string/forecast"
-        android:icon="@drawable/ic_big_cloud"/>
+        android:icon="@drawable/ic_insert_chart"/>
+    <item android:id="@+id/searchFragment"
+        android:title="@string/search"
+        android:icon="@drawable/ic_search"/>
 
 </menu>

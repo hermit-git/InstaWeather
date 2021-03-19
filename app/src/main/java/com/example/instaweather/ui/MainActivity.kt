@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
         setTheme(R.style.AppTheme)
         setContentView(binding.root)
         navController = findNavController(R.id.navHostFragment)
-        val appBarConfiguration = AppBarConfiguration(setOf(R.id.currentFragment,R.id.forecastFragment))
+        val appBarConfiguration = AppBarConfiguration(setOf(R.id.currentFragment,R.id.forecastFragment,R.id.searchFragment))
         binding.bottomNavigationView.setupWithNavController(navController)
         setupActionBarWithNavController(navController,appBarConfiguration)
 
