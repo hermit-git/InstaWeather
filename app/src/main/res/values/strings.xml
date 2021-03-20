@@ -5,4 +5,7 @@
     <string name="current_weather">Current Weather</string>
     <string name="forecast">Forecast</string>
     <string name="search">Search</string>
+    <string name="pressure">Pressure</string>
+    <string name="humidity">Humidity</string>
+    <string name="wind">Wind Speed</string>
 </resources>

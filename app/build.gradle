@@ -84,5 +84,8 @@ dependencies {
     implementation 'androidx.navigation:navigation-fragment-ktx:2.3.4'
     implementation 'androidx.navigation:navigation-ui-ktx:2.3.4'
 
+    // play services location
+    implementation 'com.google.android.gms:play-services-location:18.0.0'
+
 
 }
