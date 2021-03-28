@@ -11,6 +11,14 @@ class Constants {
         const val LATITUDE_PARAMETER = "lat"
         const val LONGITUDE_PARAMETER = "lon"
 
+        const val PERMISSION_REQUEST_CODE = 0
+
+        const val ACTION_START_SERVICE = "ACTION_START_SERVICE"
+        const val ACTION_STOP_SERVICE = "ACTION_STOP_SERVICE"
+
+        const val LOCATION_UPDATE_INTERVAL = 5000L
+        const val FASTEST_LOCATION_INTERVAL = 2000L
+
 
         // Units
         const val TEMPERATUTE_UNIT = "℃"

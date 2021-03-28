@@ -1,7 +1,10 @@
 package com.example.instaweather.ui.current
 
+import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -18,26 +21,32 @@ import androidx.lifecycle.lifecycleScope
 import com.example.instaweather.R
 import com.example.instaweather.databinding.FragmentCurrentBinding
 import com.example.instaweather.models.CurrentWeather
+import com.example.instaweather.services.WeatherLocationService
+import com.example.instaweather.util.Constants.Companion.ACTION_START_SERVICE
 import com.example.instaweather.util.Constants.Companion.API_KEY
 import com.example.instaweather.util.Constants.Companion.API_KEY_PARAMETER
 import com.example.instaweather.util.Constants.Companion.DEFAULT_UNIT
 import com.example.instaweather.util.Constants.Companion.LATITUDE_PARAMETER
 import com.example.instaweather.util.Constants.Companion.LONGITUDE_PARAMETER
+import com.example.instaweather.util.Constants.Companion.PERMISSION_REQUEST_CODE
 import com.example.instaweather.util.Constants.Companion.TEMPERATUTE_UNIT
 import com.example.instaweather.util.Constants.Companion.UNITS_PARAMETER
 import com.example.instaweather.util.NetworkResult
+import com.example.instaweather.util.PermissionUtility
 import com.example.instaweather.viewmodels.MainViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
-import java.util.jar.Manifest
+import pub.devrel.easypermissions.AppSettingsDialog
+import pub.devrel.easypermissions.EasyPermissions
 
 
-class CurrentFragment : Fragment() {
 
-    private  var _binding:FragmentCurrentBinding? = null
-    private val binding get() = _binding!!
+class CurrentFragment : Fragment(R.layout.fragment_current),EasyPermissions.PermissionCallbacks {
+
+
+    private lateinit var binding:FragmentCurrentBinding
     private lateinit var mainViewModel:MainViewModel
 
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
@@ -48,10 +57,12 @@ class CurrentFragment : Fragment() {
         mainViewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View {
-        // Inflate the layout for this fragment
-        _binding = FragmentCurrentBinding.inflate(inflater,container,false)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding = FragmentCurrentBinding.bind(view)
+
+        requestPermissions()
+        sendCommandToService(ACTION_START_SERVICE)
 
         lifecycleScope.launch {
             mainViewModel.getCurrentWeather(applyCurrentQueries())
@@ -70,7 +81,45 @@ class CurrentFragment : Fragment() {
             })
         }
 
-        return binding.root
+    }
+
+    private fun sendCommandToService(action:String) = Intent(requireContext(),WeatherLocationService::class.java).also {
+        it.action = action
+        requireContext().startService(it)
+    }
+
+    private fun requestPermissions() {
+        if(PermissionUtility.hasLocationPermission(requireContext())){
+            return
+        }
+        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.Q){
+            EasyPermissions.requestPermissions(
+                    this,
+                    "You need to accept location permissions to run this app",
+                    PERMISSION_REQUEST_CODE,
+                    Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+            )
+        } else {
+            EasyPermissions.requestPermissions(
+                    this,
+                    "You need to accept location permissions to run this app",
+                    PERMISSION_REQUEST_CODE,
+                    Manifest.permission.ACCESS_BACKGROUND_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+            )
+        }
+    }
+
+    override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>) {}
+
+    override fun onPermissionsDenied(requestCode: Int, perms: MutableList<String>) {
+        if(EasyPermissions.somePermissionPermanentlyDenied(this,perms)){
+            AppSettingsDialog.Builder(this).build().show()
+        } else {
+            requestPermissions()
+        }
     }
 
     private fun setUpUi(currentWeather: CurrentWeather) {
@@ -100,8 +149,8 @@ class CurrentFragment : Fragment() {
     }
 
     private fun getUserLocation(): UserLocation {
-        var latitude = 23.5204
-        var longitude = 87.3119
+        var latitude = 0.0
+        var longitude = 0.0
         if(ContextCompat.checkSelfPermission(requireContext(),android.Manifest.permission.ACCESS_COARSE_LOCATION)!=PackageManager.PERMISSION_GRANTED){
             ActivityCompat.requestPermissions(requireActivity(), arrayOf(android.Manifest.permission.ACCESS_COARSE_LOCATION),1)
         }  else {
